@@ -1,4 +1,6 @@
 import React from 'react'
+import VocabUpdate from './VocabUpdate'
+import NoVocab from './NoVocab'
 import {
   Box,
   Accordion,
@@ -25,13 +27,18 @@ function List(props) {
                 <h2>
                   <AccordionButton>{card.word}</AccordionButton>
                 </h2>
-                <AccordionPanel>{card.definition}</AccordionPanel>
+                <AccordionPanel>
+                  <VocabUpdate
+                    onVocabChange={props.updateVocab}
+                    vocabInfo={card}
+                  />
+                </AccordionPanel>
               </AccordionItem>
             )
           })}
         </Accordion>
       ) : (
-        <p>Load a list</p>
+        <NoVocab />
       )}
     </React.Fragment>
   )

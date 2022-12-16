@@ -39,8 +39,11 @@ function App() {
         />
       </Flex>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/edit" element={<Edit vocabSet={currentList} />} />
+        <Route path="/" element={<Home vocabSet={currentList} />} />
+        <Route
+          path="/edit"
+          element={<Edit vocabSet={currentList} update={setCurrentList} />}
+        />
       </Routes>
     </BrowserRouter>
   )
