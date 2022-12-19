@@ -36,8 +36,7 @@ function List(props) {
   function download() {
     const vocabFile = new Blob([JSON.stringify(props.vocab)], {type: 'application/json'})
     const vocabUrl = window.URL.createObjectURL(vocabFile);
-    downloadRef.current.href = vocabUrl
-    downloadRef.current.click()
+    console.log(downloadRef.current)
     window.URL.revokeObjectURL(vocabUrl)
   }
 
@@ -56,7 +55,6 @@ function List(props) {
             {props.vocab.cards.map((card) => {
               return (
                 <VocabUpdate
-                  key={props.vocab.cards.indexOf(card)}
                   onVocabChange={props.updateVocab}
                   vocabInfo={card}
                 />
@@ -65,7 +63,7 @@ function List(props) {
           </Accordion>
           <Center mt='1rem'>
             <Button border='2px black solid' onClick={addCard}>Add</Button>
-            <Button type="submit" border='2px black solid' m='0 1rem'>Save</Button>
+            <Button type="submit" border='2px black solid'>Save</Button>
             <Button as='a' border='2px black solid' onClick={download}>Download</Button>
           </Center>
         </form>
