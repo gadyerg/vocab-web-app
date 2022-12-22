@@ -1,8 +1,9 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
-import { Flex, Button, Input } from '@chakra-ui/react'
+import { Center, Button, Input } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
 import Home from './pages/Home'
 import Edit from './pages/Edit'
+import Create from './pages/Create'
 import NavBar from './components/NavBar'
 
 function App() {
@@ -25,8 +26,7 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <Flex m="0 auto" w="18rem" justifyContent="space-between" mt="5rem">
-        <Button border="2px solid black">Create New List</Button>
+      <Center m="0 auto" w="18rem" mt="5rem">
         <Button onClick={openSelector} border="2px solid black">
           Load list
         </Button>
@@ -37,13 +37,14 @@ function App() {
           accept=".json"
           onChange={setList}
         />
-      </Flex>
+      </Center>
       <Routes>
         <Route path="/" element={<Home vocabSet={currentList} />} />
         <Route
           path="/edit"
           element={<Edit vocabSet={currentList} update={setCurrentList} />}
         />
+        <Route path="/create" element={<Create />} />
       </Routes>
     </BrowserRouter>
   )

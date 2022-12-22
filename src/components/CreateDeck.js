@@ -1,16 +1,31 @@
 import React, { useState, useRef } from 'react'
+import { Center, Button, Accordion } from '@chakra-ui/react'
 import VocabUpdate from './VocabUpdate'
-import NoVocab from './NoVocab'
-import { Accordion, Button, Center } from '@chakra-ui/react'
 
-function List(props) {
-  const [allCards, setAllCards] = useState(props.vocab.cards)
+function CreateDeck() {
+  const [newDeck, setNewDeck] = useState({ cards: [] })
   const downloadRef = useRef(null)
+
+  function addCard() {
+    const updatedNewDeck = {
+      cards: [...newDeck.cards, { word: 'Empty Card', definition: '' }],
+    }
+    setNewDeck(updatedNewDeck)
+  }
+
+  function download() {
+    const vocabFile = new Blob([JSON.stringify(newDeck)], {
+      type: 'application/json',
+    })
+    const vocabUrl = window.URL.createObjectURL(vocabFile)
+    downloadRef.current.href = vocabUrl
+    downloadRef.current.click()
+    window.URL.revokeObjectURL(vocabUrl)
+  }
 
   function save(evt) {
     let updatedData = { cards: [] }
     evt.preventDefault()
-    console.log(evt.target)
     for (const data of evt.target) {
       if (data.type === 'fieldset') {
         const card = {
@@ -20,31 +35,17 @@ function List(props) {
         updatedData.cards.push(card)
       }
     }
-    props.updateList(updatedData)
-  }
-
-  function addCard() {
-    const addCard = [
-      ...props.vocab.cards,
-      { word: 'Empty Card', definition: '' },
-    ]
-    props.vocab.cards = addCard
-    setAllCards(props.vocab.cards)
-  }
-
-  function download() {
-    const vocabFile = new Blob([JSON.stringify(props.vocab)], {
-      type: 'application/json',
-    })
-    const vocabUrl = window.URL.createObjectURL(vocabFile)
-    downloadRef.current.href = vocabUrl
-    downloadRef.current.click()
-    window.URL.revokeObjectURL(vocabUrl)
+    setNewDeck(updatedData)
   }
 
   return (
     <React.Fragment>
-      {props.vocab.cards ? (
+      <Center mt="1rem">
+        <Button border="2px black solid" onClick={addCard}>
+          Add
+        </Button>
+      </Center>
+      {newDeck.cards.length > 0 && (
         <form onSubmit={save}>
           <Accordion
             allowToggle="true"
@@ -54,19 +55,16 @@ function List(props) {
             mt="1rem"
             bg="white"
           >
-            {props.vocab.cards.map((card) => {
+            {newDeck.cards.map((card) => {
               return (
                 <VocabUpdate
-                  key={props.vocab.cards.indexOf(card)}
+                  key={newDeck.cards.indexOf(card)}
                   vocabInfo={card}
                 />
               )
             })}
           </Accordion>
           <Center mt="1rem">
-            <Button border="2px black solid" onClick={addCard}>
-              Add
-            </Button>
             <Button type="submit" border="2px black solid" m="0 1rem">
               Save
             </Button>
@@ -75,12 +73,10 @@ function List(props) {
             </Button>
           </Center>
         </form>
-      ) : (
-        <NoVocab />
       )}
       <a download ref={downloadRef} style={{ display: 'hidden' }} />
     </React.Fragment>
   )
 }
 
-export default List
+export default CreateDeck
