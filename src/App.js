@@ -9,6 +9,7 @@ import NavBar from './components/NavBar'
 function App() {
   const fileSelector = useRef(null)
   const [currentList, setCurrentList] = useState({})
+  const [currentDeckPosition, setCurrentDeckPosition] = useState(0)
 
   function openSelector() {
     fileSelector.current.click()
@@ -21,6 +22,7 @@ function App() {
       const data = JSON.parse(evt.target.result)
       setCurrentList(data)
     }
+    setCurrentDeckPosition(0)
   }
 
   return (
@@ -39,7 +41,7 @@ function App() {
         />
       </Center>
       <Routes>
-        <Route path="/" element={<Home vocabSet={currentList} />} />
+        <Route path="/" element={<Home vocabSet={currentList} pos={currentDeckPosition} setPos={setCurrentDeckPosition} />} />
         <Route
           path="/edit"
           element={<Edit vocabSet={currentList} update={setCurrentList} />}

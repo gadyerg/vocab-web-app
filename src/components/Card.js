@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Center, Text, Button, Box, Flex } from '@chakra-ui/react'
 import NoVocab from './NoVocab'
 
 function Card(props) {
   const [isFlipped, setIsFlipped] = useState(false)
-  const [currentCard, setCurrentCard] = useState(0)
 
   function flip() {
     setIsFlipped((prev) => {
@@ -13,11 +12,11 @@ function Card(props) {
   }
 
   function nextCard() {
-    if (currentCard >= props.vocab.cards.length - 1) {
-      setCurrentCard(0)
+    if (props.currentCard >= props.vocab.cards.length - 1) {
+      props.setCurrentCard(0)
       setIsFlipped(false)
     } else {
-      setCurrentCard((prev) => {
+      props.setCurrentCard((prev) => {
         return prev + 1
       })
       setIsFlipped(false)
@@ -36,11 +35,11 @@ function Card(props) {
       >
         {isFlipped ? (
           <Text w="98%" textAlign="center">
-            {props.vocab.cards[currentCard].definition}
+            {props.vocab.cards[props.currentCard].definition}
           </Text>
         ) : (
           <Text w="98%" textAlign="center" fontSize="2rem">
-            {props.vocab.cards[currentCard].word}
+            {props.vocab.cards[props.currentCard].word}
           </Text>
         )}
       </Center>
